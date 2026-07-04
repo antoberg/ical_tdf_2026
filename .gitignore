@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+
+# Fichier .ics généré (régénéré par le workflow GitHub Actions)
+public/tdf2026.ics
