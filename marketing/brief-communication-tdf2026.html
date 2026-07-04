@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Brief communication — Calendrier TDF 2026</title>
+<style>
+  :root{
+    --ink:#0e1b4d;
+    --accent:#4770db;
+    --green:#1c7a3e;
+    --surface:#f6f8fc;
+    --line:rgba(14,27,77,.14);
+    --muted:#5a6485;
+  }
+  @page{ size:A4; margin:16mm 15mm; }
+  *{ box-sizing:border-box; }
+  body{
+    font-family:"Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    line-height:1.55;
+    font-size:11.5px;
+    margin:0;
+  }
+  h1,h2,h3{ line-height:1.2; }
+  h1{ font-size:27px; font-weight:800; letter-spacing:-.02em; margin:0 0 6px; }
+  h2{ font-size:18px; font-weight:800; margin:0 0 10px; letter-spacing:-.01em; }
+  h3{ font-size:13.5px; font-weight:800; margin:16px 0 6px; color:var(--accent); text-transform:uppercase; letter-spacing:.03em; }
+  p{ margin:0 0 8px; }
+  ul{ margin:0 0 10px; padding-left:0; list-style:none; }
+  li{ position:relative; padding:2px 0 2px 20px; margin-bottom:3px; }
+  li::before{ content:"›"; position:absolute; left:4px; top:1px; color:var(--accent); font-weight:800; }
+  strong{ color:var(--ink); }
+  .accent{ color:var(--accent); }
+  .green{ color:var(--green); }
+  .muted{ color:var(--muted); }
+
+  /* Cover */
+  .cover{
+    background:var(--ink); color:#fff; border-radius:16px;
+    padding:34px 32px; margin-bottom:22px;
+  }
+  .cover .eyebrow{ text-transform:uppercase; letter-spacing:.18em; font-size:10px; font-weight:700; color:#9db4f2; margin-bottom:14px; }
+  .cover h1{ color:#fff; font-size:30px; }
+  .cover .sub{ color:rgba(255,255,255,.8); font-size:13px; margin-top:8px; max-width:520px; }
+  .cover .meta{ margin-top:20px; font-size:10.5px; color:rgba(255,255,255,.65); }
+
+  .section{ page-break-inside:auto; margin-bottom:6px; }
+  .tag{
+    display:inline-block; background:var(--accent); color:#fff;
+    font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em;
+    padding:4px 12px; border-radius:40px; margin-bottom:12px;
+  }
+  .tag.dark{ background:var(--ink); }
+
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; margin:0 0 12px; page-break-inside:avoid;
+  }
+  .card.callout{ background:#eef7f0; border-color:#cfe6d6; }
+  .card.warn{ background:#fff8e1; border-color:#f0e2b0; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .stat-row{ display:flex; gap:10px; margin:6px 0 14px; }
+  .stat{ flex:1; background:var(--ink); color:#fff; border-radius:10px; padding:12px 8px; text-align:center; }
+  .stat .n{ display:block; font-size:20px; font-weight:800; }
+  .stat .l{ display:block; font-size:9px; text-transform:uppercase; letter-spacing:.06em; color:#9db4f2; margin-top:2px; }
+
+  .prompt{
+    background:#0e1b4d; color:#e9edf9; border-radius:10px; padding:12px 14px;
+    font-family:"Consolas","Courier New",monospace; font-size:10px; line-height:1.5;
+    white-space:pre-wrap; margin:6px 0 14px; page-break-inside:avoid;
+  }
+  .prompt .c{ color:#8fb0ff; }
+
+  table{ width:100%; border-collapse:collapse; font-size:10.5px; margin:6px 0 14px; page-break-inside:avoid; }
+  th{ background:var(--ink); color:#fff; text-align:left; padding:7px 9px; font-size:9.5px; text-transform:uppercase; letter-spacing:.03em; }
+  td{ padding:7px 9px; border-top:1px solid var(--line); vertical-align:top; }
+  tr:nth-child(even) td{ background:var(--surface); }
+
+  .pagebreak{ page-break-before:always; }
+  .footer{ margin-top:16px; padding-top:10px; border-top:1px solid var(--line); font-size:9px; color:var(--muted); }
+  .swatch{ display:inline-block; width:11px; height:11px; border-radius:3px; vertical-align:middle; margin-right:5px; border:1px solid rgba(0,0,0,.1); }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Probikestock · Opération Tour de France 2026</div>
+  <h1>Calendrier iCal du Tour 2026<br>Brief projet &amp; communication</h1>
+  <p class="sub">Tout ce qu'il faut savoir sur l'outil qu'on a développé, pourquoi on le fait, et comment le transformer en contenu qui cartonne pendant le Tour.</p>
+  <div class="meta">Document en 2 parties · Partie 1 pour Alix · Partie 2 : brief prêt à copier-coller dans une IA (Claude) pour générer les visuels &amp; textes.</div>
+</div>
+
+<!-- ══════════════════  PARTIE 1  ══════════════════ -->
+<div class="section">
+  <span class="tag dark">Partie 1 — Pour Alix</span>
+  <h2>C'est quoi ce projet, en 30 secondes</h2>
+  <p>On a créé un <strong>calendrier gratuit du Tour de France 2026</strong> que n'importe qui peut <strong>ajouter à son agenda</strong> (Google Agenda, iPhone, Outlook). Les 21 étapes apparaissent automatiquement aux bonnes dates, avec les cols, les distances, les favoris et un rappel le matin de chaque étape.</p>
+  <p>Il est présenté dans un <strong>article de blog sur notre site</strong>. Pour y accéder, le visiteur laisse son <strong>email</strong> → on construit ainsi notre liste de contacts (newsletter).</p>
+
+  <div class="stat-row">
+    <div class="stat"><span class="n">21</span><span class="l">étapes</span></div>
+    <div class="stat"><span class="n">3 333</span><span class="l">km</span></div>
+    <div class="stat"><span class="n">54 450</span><span class="l">m D+</span></div>
+    <div class="stat"><span class="n">2×</span><span class="l">Alpe d'Huez</span></div>
+  </div>
+
+  <h3>Ce qu'on a construit concrètement</h3>
+  <ul>
+    <li><strong>Un fichier calendrier (.ics)</strong> — le format standard que tous les agendas comprennent.</li>
+    <li><strong>Une génération automatique</strong> — un petit programme fabrique le calendrier à partir des données des étapes ; si on modifie une info, tout se met à jour tout seul.</li>
+    <li><strong>Une page d'article</strong> — avec un tableau des 21 étapes, un bouton « Détail » vers le site officiel letour.fr, et les jours de repos en vert.</li>
+    <li><strong>Un formulaire email obligatoire</strong> — pour débloquer le calendrier, il faut donner son adresse. Elle arrive directement dans <strong>Shopify → Clients</strong> avec le tag <em>tdf2026</em>.</li>
+    <li><strong>Une adresse web propre et de marque</strong> — <span class="accent">apps.probikestock.com</span> (et non un lien technique) : ça inspire confiance et c'est réutilisable pour nos prochains outils.</li>
+    <li><strong>Mise à jour automatique</strong> — les abonnés reçoivent les changements sans rien faire.</li>
+  </ul>
+
+  <h3>Pourquoi on fait ça — l'intérêt marketing réel</h3>
+  <p>Au-delà de l'outil pratique (qu'on utilisera nous-mêmes), cette opération sert <strong>4 objectifs business</strong> :</p>
+  <div class="card">
+    <ul>
+      <li><strong>Capturer des emails = se constituer une audience qu'on possède.</strong> Contrairement aux abonnés Instagram (qui appartiennent à Meta), une liste email est <strong>à nous</strong> : on peut la recontacter quand on veut, gratuitement, sans dépendre d'un algorithme.</li>
+      <li><strong>Du trafic gratuit et qualifié (SEO).</strong> Des milliers de gens tapent « calendrier Tour de France 2026 » sur Google. On capte cette recherche → des passionnés de vélo arrivent sur notre site (= notre cœur de cible produit).</li>
+      <li><strong>Du branding passif énorme.</strong> Chaque abonné voit « Probikestock » dans son agenda <strong>tous les jours pendant 3 semaines</strong> (21 étapes + rappels). Impossible d'acheter une telle présence quotidienne.</li>
+      <li><strong>Une image de marque généreuse et experte.</strong> Un outil gratuit et vraiment utile crée de la <strong>sympathie et de la confiance</strong> — bien plus qu'une pub. Ces contacts deviennent plus tard des clients pour nos produits vélo.</li>
+    </ul>
+  </div>
+  <div class="card callout">
+    <strong>En une phrase :</strong> on échange un service gratuit et malin contre l'email et l'attention de milliers de passionnés de vélo, au moment exact où ils sont le plus captivés — le Tour de France.
+  </div>
+
+  <h3>Ta mission, Alix</h3>
+  <ul>
+    <li>Créer les <strong>supports de com'</strong> (post + story Instagram, éventuellement Reel) qui envoient les gens vers l'article de blog.</li>
+    <li>Objectif : <strong>un maximum de clics vers l'article</strong> → un maximum d'emails récupérés.</li>
+    <li>Tu n'as <strong>pas besoin de savoir coder</strong> : la Partie 2 de ce document est un brief tout prêt. Tu peux le <strong>copier-coller dans une IA (Claude)</strong> pour générer les textes et les visuels en quelques minutes.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════  PARTIE 2  ══════════════════ -->
+<div class="pagebreak"></div>
+<div class="section">
+  <span class="tag">Partie 2 — Brief pour l'IA (Claude Design)</span>
+  <h2>Brief créatif complet &amp; stratégie de diffusion</h2>
+  <p class="muted">Cette partie donne à l'IA tout le contexte, la charte, les formats à produire, la stratégie temporelle et des prompts prêts à l'emploi. Alix peut copier des sections entières directement dans Claude.</p>
+
+  <h3>1. Contexte &amp; objectif</h3>
+  <div class="card">
+    <ul>
+      <li><strong>Marque :</strong> Probikestock — e-commerce spécialisé matériel &amp; passion vélo.</li>
+      <li><strong>Produit à promouvoir :</strong> un calendrier iCal gratuit des 21 étapes du Tour de France 2026, à ajouter à son agenda.</li>
+      <li><strong>Page de destination :</strong> l'article de blog Probikestock (accès au calendrier après saisie d'un email).</li>
+      <li><strong>Objectif n°1 :</strong> maximiser les clics vers l'article + la collecte d'emails.</li>
+      <li><strong>Objectif n°2 :</strong> notoriété — associer Probikestock au Tour de France dans l'esprit des fans.</li>
+      <li><strong>Période clé :</strong> Tour de France 2026, du <strong>4 juillet (Barcelone)</strong> au <strong>26 juillet (Paris)</strong>. Communication à lancer <strong>~10 jours avant</strong> et à entretenir pendant les 3 semaines.</li>
+    </ul>
+  </div>
+
+  <h3>2. Cible</h3>
+  <ul>
+    <li>Passionnés et suiveurs de cyclisme, francophones, tous âges (cœur : 25–55 ans).</li>
+    <li>Ceux qui « ne veulent rien rater » du Tour : cyclosportifs, spectateurs, parieurs amateurs, fans de la petite reine.</li>
+    <li>Insight clé : <strong>ils ont peur de rater une étape / oublient les horaires</strong> → le calendrier résout une vraie frustration.</li>
+  </ul>
+
+  <h3>3. Charte visuelle (à respecter)</h3>
+  <div class="grid2">
+    <div class="card">
+      <strong>Couleurs</strong>
+      <ul>
+        <li><span class="swatch" style="background:#0e1b4d"></span>Bleu marine <strong>#0e1b4d</strong> (fond, texte)</li>
+        <li><span class="swatch" style="background:#4770db"></span>Bleu accent <strong>#4770db</strong> (boutons, liens)</li>
+        <li><span class="swatch" style="background:#1c7a3e"></span>Vert <strong>#1c7a3e</strong> (jours de repos)</li>
+        <li><span class="swatch" style="background:#ffffff;border:1px solid #ccc"></span>Blanc / <span class="swatch" style="background:#f6f8fc"></span>gris très clair</li>
+      </ul>
+    </div>
+    <div class="card">
+      <strong>Style &amp; ton</strong>
+      <ul>
+        <li>Typo : titres gras condensés (type Archivo), texte simple (type Questrial).</li>
+        <li>Ton : <strong>passionné, expert mais accessible</strong>, complice, un brin fun.</li>
+        <li>Tutoiement (comme sur le site).</li>
+        <li>Emojis d'étapes : 🏔️ montagne · 🚀 plaine · ⏱️ CLM · ⛰️ accidentée · 🔥 étape reine · 🟢 repos.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>4. Formats à produire</h3>
+  <table>
+    <thead><tr><th>Format</th><th>Contenu</th><th>Objectif</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Carrousel Instagram</strong> (5–7 slides)</td><td>Slide 1 accroche → slides étapes clés → slide « comment l'ajouter » → slide CTA</td><td>Explication + désir + clic bio</td></tr>
+      <tr><td><strong>Story Instagram</strong> (2–3 écrans)</td><td>Teaser + démo rapide + sticker lien vers l'article</td><td>Clic direct (lien)</td></tr>
+      <tr><td><strong>Post feed simple</strong></td><td>Visuel fort « Le Tour dans ton agenda » + légende</td><td>Portée &amp; branding</td></tr>
+      <tr><td><strong>Reel (30 s)</strong></td><td>Screen-recording : on ajoute le calendrier en 10 s, montage rythmé</td><td>Viralité / reach</td></tr>
+      <tr><td><strong>Story « étape du jour »</strong> (récurrent)</td><td>1 story/jour pendant le Tour avec l'étape du jour tirée du calendrier</td><td>Présence quotidienne</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5. Stratégie de diffusion (calendrier de publication)</h3>
+  <table>
+    <thead><tr><th>Quand</th><th>Quoi publier</th></tr></thead>
+    <tbody>
+      <tr><td><strong>J-10 → J-3</strong> (fin juin)</td><td>Carrousel de lancement « Le Tour arrive, prépare ton agenda » + 1er post feed. Teasing.</td></tr>
+      <tr><td><strong>J-1 / Jour du départ</strong> (3–4 juil.)</td><td>Story + Reel « Ça commence demain — ajoute les 21 étapes en 1 clic ». Pic d'attention max.</td></tr>
+      <tr><td><strong>Pendant le Tour</strong></td><td>Story « étape du jour » quotidienne (rappel discret du calendrier en fin de story).</td></tr>
+      <tr><td><strong>Moments forts</strong></td><td>Republier aux étapes spectacle : 6 juil. (1re montagne), <strong>25–26 juil. (double Alpe d'Huez 🔥)</strong>, arrivée Paris.</td></tr>
+      <tr><td><strong>Jours de repos</strong> (13 &amp; 20 juil.)</td><td>Post « récap » léger, ton détente, vert. Bon moment pour re-pousser l'inscription.</td></tr>
+    </tbody>
+  </table>
+  <div class="card callout">
+    <strong>Principe :</strong> une grosse pièce au lancement, puis une <strong>présence quotidienne légère</strong> (stories) qui entretient le sujet sans lasser, avec des pics aux étapes les plus médiatiques.</div>
+
+  <h3>6. Messages clés &amp; accroches (réutilisables)</h3>
+  <ul>
+    <li>« <strong>Ne rate plus aucune étape du Tour 2026.</strong> »</li>
+    <li>« Les 21 étapes dans ton agenda, en 1 clic. Gratuit. »</li>
+    <li>« De Barcelone à Paris — tout le Tour, direct dans ton calendrier. »</li>
+    <li>« Cols, dénivelés, favoris, rappels : le Tour t'attend dans ton agenda. »</li>
+    <li>Angle FOMO : « Tu suis le Tour ? Ceci va te changer la vie 👇 »</li>
+  </ul>
+
+  <h3>7. Éléments factuels à intégrer (assets)</h3>
+  <ul>
+    <li><strong>Chiffres chocs :</strong> 21 étapes · 3 333 km · 54 450 m de D+ · double Alpe d'Huez pour finir.</li>
+    <li><strong>Étapes « stars » à mettre en avant :</strong> Barcelone (grand départ, CLM par équipes), Alpe d'Huez ×2 (25–26 juil.), Pau/Pyrénées, arrivée Paris.</li>
+    <li><strong>Bénéfices à répéter :</strong> gratuit · compatible Google/Apple/Outlook · rappel le matin · mise à jour auto.</li>
+    <li><strong>CTA :</strong> « Lien dans la bio » / « Swipe up » / « Ajoute-le à ton agenda ».</li>
+    <li><strong>Hashtags :</strong> #TourDeFrance #TDF2026 #Cyclisme #Vélo #LeTour #TeamProbikestock + géo/étapes.</li>
+  </ul>
+
+  <h3>8. Prompts prêts à copier-coller dans Claude</h3>
+  <p class="muted">Alix : colle l'un de ces prompts dans Claude, avec les sections 1 à 7 ci-dessus en contexte.</p>
+
+  <p><strong>a) Générer le carrousel Instagram :</strong></p>
+  <div class="prompt"><span class="c"># Rôle</span>
+Tu es directeur artistique + copywriter réseaux sociaux pour Probikestock (marque vélo).
+
+<span class="c"># Tâche</span>
+Crée un carrousel Instagram de 6 slides pour promouvoir notre calendrier
+gratuit du Tour de France 2026 (à ajouter à son agenda). Objectif : clics
+vers l'article de blog (lien en bio) et collecte d'emails.
+
+<span class="c"># Pour chaque slide, donne :</span>
+- Le texte affiché (court, punchy)
+- La description du visuel (couleurs #0e1b4d / #4770db / vert #1c7a3e, style
+  éditorial épuré, gros chiffres)
+- Une suggestion d'image/illustration
+
+<span class="c"># Contraintes</span>
+Ton passionné et complice, tutoiement. Slide 1 = accroche FOMO. Slide finale
+= CTA « Lien en bio ». Intègre les chiffres : 21 étapes, 3 333 km, double
+Alpe d'Huez. Termine par une légende Instagram complète + hashtags.</div>
+
+  <p><strong>b) Générer la story + le Reel :</strong></p>
+  <div class="prompt"><span class="c"># Tâche</span>
+Écris (1) le script d'une story Instagram en 3 écrans et (2) le script d'un
+Reel de 30 s montrant qu'on ajoute le calendrier du Tour 2026 à son agenda
+en quelques secondes.
+
+Pour le Reel : découpe plan par plan (visuel + texte à l'écran + rythme +
+suggestion de son/tendance). Ton dynamique. CTA clair vers le lien en bio.
+Marque : Probikestock, couleurs #0e1b4d / #4770db.</div>
+
+  <p><strong>c) Générer 30 stories « étape du jour » :</strong></p>
+  <div class="prompt"><span class="c"># Tâche</span>
+À partir de la liste des 21 étapes (je te la colle), génère pour chaque
+étape une mini-story Instagram : titre de l'étape, type (montagne/plaine…),
+1 phrase d'accroche, et un rappel discret « Calendrier complet → lien en
+bio ». Format court, lisible, cohérent avec la charte Probikestock.</div>
+
+  <div class="card warn">
+    <strong>Astuce pour les visuels générés par IA :</strong> demande à l'outil des images au format <strong>1080×1350 px</strong> (carrousel/post) et <strong>1080×1920 px</strong> (story/Reel), fond bleu marine #0e1b4d, et fais-lui toujours rappeler la charte de couleurs à chaque génération pour rester cohérent.
+  </div>
+
+  <h3>9. À ne pas oublier</h3>
+  <ul>
+    <li><strong>Mettre le lien de l'article en bio</strong> Instagram (et dans les stickers de story) pendant toute la durée.</li>
+    <li>Rester <strong>cohérent visuellement</strong> d'un post à l'autre (même charte) → effet « campagne ».</li>
+    <li><strong>Mention légale / RGPD :</strong> le formulaire recueille des emails avec consentement — rien à gérer côté com', mais ne pas promettre autre chose que « calendrier + actus vélo ».</li>
+    <li>Penser à <strong>republier/rappeler</strong> : la plupart des inscriptions viennent de la répétition, pas d'un seul post.</li>
+  </ul>
+
+  <div class="footer">
+    Probikestock — Opération Calendrier Tour de France 2026 · Page de l'outil : apps.probikestock.com/tdf-2026 · Document interne (brief projet &amp; communication).
+  </div>
+</div>
+
+</body>
+</html>

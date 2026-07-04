@@ -76,10 +76,10 @@ def stage_to_vevent(stage: dict) -> str:
 
     # ── SUMMARY ──
     if is_rest:
-        summary = f"{cfg['emoji']} Tour de France 2026 — Repos ({stage['end']})"
+        summary = f"{cfg['emoji']} Probikestock · TDF 2026 — Repos ({stage['end']})"
     else:
         summary = (
-            f"{cfg['emoji']} TDF 2026 — Ét. {stage['num']} : "
+            f"{cfg['emoji']} Probikestock · TDF 2026 — Ét. {stage['num']} : "
             f"{stage['start']} → {stage['end']} ({stage['km']} km)"
         )
 
@@ -110,6 +110,12 @@ def stage_to_vevent(stage: dict) -> str:
         desc_lines.append(f"🔗 Profil et carte : {STAGE_URL_TEMPLATE.format(num=stage_num)}")
     else:
         desc_lines.append(stage["description"])
+
+    # Signature de marque (visible dans chaque événement, tous les jours)
+    desc_lines.append("")
+    desc_lines.append("──────────")
+    desc_lines.append("🚴 Calendrier proposé par Probikestock")
+    desc_lines.append("🔗 probikestock.com")
 
     # Escape each line individually, THEN join with iCal newline literal
     description = "\\n".join(ical_escape(line) for line in desc_lines)
@@ -168,8 +174,8 @@ def generate_ics(stages: list) -> str:
         "PRODID:-//TDF2026//Tour de France 2026//FR",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
-        "X-WR-CALNAME:Tour de France 2026",
-        "X-WR-CALDESC:Les 21 étapes du Tour de France 2026 — Barcelone → Paris",
+        "X-WR-CALNAME:Tour de France 2026 · Probikestock",
+        "X-WR-CALDESC:Les 21 étapes du Tour de France 2026 — Barcelone → Paris. Proposé par Probikestock (probikestock.com).",
         "X-WR-TIMEZONE:Europe/Paris",
         "REFRESH-INTERVAL;VALUE=DURATION:P1D",
         "X-PUBLISHED-TTL:P1D",

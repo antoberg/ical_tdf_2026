@@ -351,9 +351,9 @@
     <tr><td class="tdf-num">12</td><td>16 juil.</td><td>Magny-Cours → Chalon-sur-Saône</td><td class="tdf-km">179,1</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-12" target="_blank" rel="noopener">Voir →</a></td></tr>
     <tr><td class="tdf-num">13</td><td>17 juil.</td><td>Dole → Belfort</td><td class="tdf-km">205,8</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-13" target="_blank" rel="noopener">Voir →</a></td></tr>
     <tr><td class="tdf-num">14</td><td>18 juil.</td><td>Mulhouse → Le Markstein</td><td class="tdf-km">155,3</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-14" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="tdf-num">15</td><td>19 juil.</td><td>Champagnole → Plateau de Solaison</td><td class="tdf-km">183,9</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-15" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num" data-secret="reset">15</td><td>19 juil.</td><td>Champagnole → Plateau de Solaison</td><td class="tdf-km">183,9</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-15" target="_blank" rel="noopener">Voir →</a></td></tr>
     <tr class="tdf-rest"><td colspan="6">🟢 20 juillet — Journée de repos</td></tr>
-    <tr><td class="tdf-num">16</td><td>21 juil.</td><td>Évian → Thonon-les-Bains</td><td class="tdf-km">26,1</td><td>⏱️ CLM individuel</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-16" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num" data-secret="hide">16</td><td>21 juil.</td><td>Évian → Thonon-les-Bains</td><td class="tdf-km">26,1</td><td>⏱️ CLM individuel</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-16" target="_blank" rel="noopener">Voir →</a></td></tr>
     <tr><td class="tdf-num">17</td><td>22 juil.</td><td>Chambéry → Voiron</td><td class="tdf-km">174,7</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-17" target="_blank" rel="noopener">Voir →</a></td></tr>
     <tr><td class="tdf-num">18</td><td>23 juil.</td><td>Voiron → Orcières-Merlette</td><td class="tdf-km">185,2</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-18" target="_blank" rel="noopener">Voir →</a></td></tr>
     <tr><td class="tdf-num">19</td><td>24 juil.</td><td>Gap → Alpe d'Huez</td><td class="tdf-km">127,9</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-19" target="_blank" rel="noopener">Voir →</a></td></tr>
@@ -417,6 +417,31 @@
       document.body.appendChild(ta); ta.focus(); ta.select();
       try { document.execCommand('copy'); cb(); } catch (e) {}
       document.body.removeChild(ta);
+    }
+
+    // ── Boutons secrets (dev/test) : discrets, dans le tableau des étapes ──
+    // Clic sur le "15" (étape 15) → réinitialise / re-verrouille le formulaire
+    var secReset = document.querySelector('#tdf-article [data-secret="reset"]');
+    if (secReset) {
+      secReset.style.cursor = 'default';
+      secReset.addEventListener('click', function () {
+        try { localStorage.removeItem('tdf_unlocked'); } catch (e) {}
+        var g = document.getElementById('tdf-gate');
+        var u = document.getElementById('tdf-unlocked');
+        if (g) g.style.display = '';
+        if (u) u.style.display = 'none';
+      });
+    }
+    // Clic sur le "16" (étape 16) → fait disparaître le formulaire
+    var secHide = document.querySelector('#tdf-article [data-secret="hide"]');
+    if (secHide) {
+      secHide.style.cursor = 'default';
+      secHide.addEventListener('click', function () {
+        var g = document.getElementById('tdf-gate');
+        var u = document.getElementById('tdf-unlocked');
+        if (g) g.style.display = 'none';
+        if (u) u.style.display = 'none';
+      });
     }
   })();
 </script>
