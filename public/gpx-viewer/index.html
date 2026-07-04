@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualiseur GPX · Probikestock</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{ --ink:#0e1b4d; --accent:#4770db; --line:rgba(14,27,77,.14); --surface:#f6f8fc; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:system-ui,-apple-system,sans-serif; color:var(--ink); background:#fafbfd; }
+  .wrap{ max-width:960px; margin:0 auto; padding:24px 16px 60px; }
+  h1{ font-size:1.6rem; font-weight:800; margin:0 0 4px; }
+  .sub{ color:#5a6485; margin:0 0 20px; font-size:.95rem; }
+
+  .drop{
+    border:2px dashed var(--line); border-radius:16px; padding:30px 20px;
+    text-align:center; cursor:pointer; background:#fff; transition:border-color .15s ease;
+  }
+  .drop.drag{ border-color:var(--accent); background:#eef2fd; }
+  .drop p{ margin:0; color:#5a6485; }
+  .drop strong{ color:var(--ink); }
+  input[type=file]{ display:none; }
+
+  #stats{
+    display:none; grid-template-columns:repeat(4,1fr); gap:10px;
+    margin:20px 0; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .stat{ text-align:center; }
+  .stat .n{ display:block; font-weight:800; font-size:1.5rem; }
+  .stat .l{ display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#5a6485; margin-top:4px; }
+
+  #map{ display:none; height:380px; border-radius:16px; margin-top:18px; border:1px solid var(--line); }
+  #profile-wrap{ display:none; margin-top:18px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px; }
+  #profile-wrap h3{ font-size:.95rem; margin:0 0 10px; }
+  canvas{ width:100%; display:block; }
+
+  #error{ display:none; color:#a33; background:#fdeaea; border:1px solid #f2c2c2; border-radius:10px; padding:12px 14px; margin-top:14px; font-size:.9rem; }
+
+  footer{ text-align:center; margin-top:30px; font-size:.8rem; color:#9aa2bd; }
+  footer a{ color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🗺️ Visualiseur de trace GPX</h1>
+  <p class="sub">Dépose un fichier .gpx pour voir le parcours sur la carte et son profil altimétrique. Rien n'est envoyé sur un serveur : tout se passe dans ton navigateur.</p>
+
+  <div class="drop" id="drop">
+    <p><strong>Clique pour choisir un fichier</strong> ou glisse-le ici<br>Format .gpx</p>
+    <input type="file" id="file" accept=".gpx">
+  </div>
+
+  <div id="error"></div>
+
+  <div id="stats">
+    <div class="stat"><span class="n" id="s-dist">–</span><span class="l">km</span></div>
+    <div class="stat"><span class="n" id="s-dplus">–</span><span class="l">m D+</span></div>
+    <div class="stat"><span class="n" id="s-dminus">–</span><span class="l">m D-</span></div>
+    <div class="stat"><span class="n" id="s-alt">–</span><span class="l">alt. max</span></div>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="profile-wrap">
+    <h3>Profil altimétrique</h3>
+    <canvas id="profile" width="900" height="220"></canvas>
+  </div>
+
+  <footer>Proposé par <a href="https://probikestock.com">Probikestock</a></footer>
+</div>
+
+<script>
+(function(){
+  var dropEl = document.getElementById('drop');
+  var fileEl = document.getElementById('file');
+  var errEl = document.getElementById('error');
+  var map, trackLayer;
+
+  dropEl.addEventListener('click', function(){ fileEl.click(); });
+  ['dragover','dragenter'].forEach(function(ev){
+    dropEl.addEventListener(ev, function(e){ e.preventDefault(); dropEl.classList.add('drag'); });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    dropEl.addEventListener(ev, function(e){ e.preventDefault(); dropEl.classList.remove('drag'); });
+  });
+  dropEl.addEventListener('drop', function(e){
+    var f = e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+  fileEl.addEventListener('change', function(){
+    if (fileEl.files[0]) handleFile(fileEl.files[0]);
+  });
+
+  function showError(msg){
+    errEl.textContent = msg;
+    errEl.style.display = 'block';
+  }
+
+  function handleFile(file){
+    errEl.style.display = 'none';
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try {
+        var points = parseGPX(e.target.result);
+        if (!points.length) { showError('Aucun point trouvé dans ce fichier GPX.'); return; }
+        render(points);
+      } catch (err) {
+        showError('Impossible de lire ce fichier : ' + err.message);
+      }
+    };
+    reader.onerror = function(){ showError('Erreur de lecture du fichier.'); };
+    reader.readAsText(file);
+  }
+
+  function parseGPX(text){
+    var xml = new DOMParser().parseFromString(text, 'application/xml');
+    if (xml.querySelector('parsererror')) throw new Error('fichier XML invalide');
+    var nodes = xml.querySelectorAll('trkpt, rtept');
+    var points = [];
+    nodes.forEach(function(n){
+      var lat = parseFloat(n.getAttribute('lat'));
+      var lon = parseFloat(n.getAttribute('lon'));
+      var eleNode = n.querySelector('ele');
+      var ele = eleNode ? parseFloat(eleNode.textContent) : null;
+      if (!isNaN(lat) && !isNaN(lon)) points.push({ lat: lat, lon: lon, ele: ele });
+    });
+    return points;
+  }
+
+  function haversine(a, b){
+    var R = 6371000;
+    var toRad = function(d){ return d * Math.PI / 180; };
+    var dLat = toRad(b.lat - a.lat);
+    var dLon = toRad(b.lon - a.lon);
+    var s = Math.sin(dLat/2)*Math.sin(dLat/2) +
+            Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)*Math.sin(dLon/2);
+    return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
+  }
+
+  function render(points){
+    // ── Stats : distance, D+, D-, altitude max ──
+    var dist = 0, dPlus = 0, dMinus = 0, altMax = -Infinity;
+    var cum = [0]; // distance cumulée par point (km)
+    for (var i = 1; i < points.length; i++){
+      var d = haversine(points[i-1], points[i]);
+      dist += d;
+      cum.push(dist / 1000);
+      if (points[i].ele != null && points[i-1].ele != null){
+        var delta = points[i].ele - points[i-1].ele;
+        if (delta > 0) dPlus += delta; else dMinus += -delta;
+      }
+      if (points[i].ele != null) altMax = Math.max(altMax, points[i].ele);
+    }
+    if (points[0].ele != null) altMax = Math.max(altMax, points[0].ele);
+
+    document.getElementById('s-dist').textContent = (dist/1000).toFixed(1);
+    document.getElementById('s-dplus').textContent = Math.round(dPlus);
+    document.getElementById('s-dminus').textContent = Math.round(dMinus);
+    document.getElementById('s-alt').textContent = altMax > -Infinity ? Math.round(altMax) : '–';
+    document.getElementById('stats').style.display = 'grid';
+
+    // ── Carte ──
+    var mapEl = document.getElementById('map');
+    mapEl.style.display = 'block';
+    if (!map) map = L.map('map');
+    if (trackLayer) map.removeLayer(trackLayer);
+    var latlngs = points.map(function(p){ return [p.lat, p.lon]; });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors', maxZoom: 18
+    }).addTo(map);
+    trackLayer = L.polyline(latlngs, { color: '#4770db', weight: 4 }).addTo(map);
+    map.fitBounds(trackLayer.getBounds(), { padding: [20,20] });
+    setTimeout(function(){ map.invalidateSize(); }, 50);
+
+    // ── Profil altimétrique ──
+    var hasEle = points.some(function(p){ return p.ele != null; });
+    var profWrap = document.getElementById('profile-wrap');
+    if (hasEle){
+      profWrap.style.display = 'block';
+      drawProfile(points, cum);
+    } else {
+      profWrap.style.display = 'none';
+    }
+  }
+
+  function drawProfile(points, cum){
+    var canvas = document.getElementById('profile');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var pad = { l: 40, r: 10, t: 10, b: 24 };
+    ctx.clearRect(0, 0, W, H);
+
+    var eles = points.map(function(p){ return p.ele != null ? p.ele : 0; });
+    var minE = Math.min.apply(null, eles), maxE = Math.max.apply(null, eles);
+    if (minE === maxE) maxE = minE + 1;
+    var maxD = cum[cum.length - 1] || 1;
+
+    function x(d){ return pad.l + (d / maxD) * (W - pad.l - pad.r); }
+    function y(e){ return H - pad.b - ((e - minE) / (maxE - minE)) * (H - pad.t - pad.b); }
+
+    // grille + axes
+    ctx.strokeStyle = '#e3e7f0'; ctx.fillStyle = '#5a6485'; ctx.font = '10px system-ui';
+    ctx.lineWidth = 1;
+    for (var g = 0; g <= 4; g++){
+      var ge = minE + (maxE - minE) * g / 4;
+      var gy = y(ge);
+      ctx.beginPath(); ctx.moveTo(pad.l, gy); ctx.lineTo(W - pad.r, gy); ctx.stroke();
+      ctx.fillText(Math.round(ge) + 'm', 2, gy + 3);
+    }
+
+    // aire sous la courbe
+    ctx.beginPath();
+    ctx.moveTo(x(0), H - pad.b);
+    for (var i = 0; i < points.length; i++) ctx.lineTo(x(cum[i]), y(eles[i]));
+    ctx.lineTo(x(maxD), H - pad.b);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(71,112,219,.18)';
+    ctx.fill();
+
+    // ligne
+    ctx.beginPath();
+    for (i = 0; i < points.length; i++){
+      var px = x(cum[i]), py = y(eles[i]);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.strokeStyle = '#0e1b4d';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // axe X (km)
+    ctx.fillStyle = '#5a6485';
+    for (var k = 0; k <= 4; k++){
+      var kd = maxD * k / 4;
+      ctx.fillText(kd.toFixed(0) + ' km', x(kd) - 8, H - 6);
+    }
+  }
+})();
+</script>
+</body>
+</html>
