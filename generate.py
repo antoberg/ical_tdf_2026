@@ -87,7 +87,7 @@ def stage_to_vevent(stage: dict) -> str:
     desc_lines = []
 
     # Signature de marque, en haut de chaque description
-    desc_lines.append("🚴 Calendrier proposé par Probikestock — probikestock.com")
+    desc_lines.append("Calendrier proposé par Probikestock — probikestock.com")
     desc_lines.append("──────────")
     desc_lines.append("")
 
