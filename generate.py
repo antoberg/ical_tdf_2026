@@ -76,15 +76,21 @@ def stage_to_vevent(stage: dict) -> str:
 
     # ── SUMMARY ──
     if is_rest:
-        summary = f"{cfg['emoji']} Probikestock · TDF 2026 — Repos ({stage['end']})"
+        summary = f"{cfg['emoji']} TDF 2026 — Repos ({stage['end']}) · Probikestock"
     else:
         summary = (
-            f"{cfg['emoji']} Probikestock · TDF 2026 — Ét. {stage['num']} : "
-            f"{stage['start']} → {stage['end']} ({stage['km']} km)"
+            f"{cfg['emoji']} TDF 2026 — Ét. {stage['num']} : "
+            f"{stage['start']} → {stage['end']} ({stage['km']} km) · Probikestock"
         )
 
     # ── DESCRIPTION ──
     desc_lines = []
+
+    # Signature de marque, en haut de chaque description
+    desc_lines.append("🚴 Calendrier proposé par Probikestock — probikestock.com")
+    desc_lines.append("──────────")
+    desc_lines.append("")
+
     if not is_rest:
         desc_lines.append(f"📍 {stage['start']} → {stage['end']}")
         desc_lines.append(f"📏 Distance : {stage['km']} km")
@@ -110,12 +116,6 @@ def stage_to_vevent(stage: dict) -> str:
         desc_lines.append(f"🔗 Profil et carte : {STAGE_URL_TEMPLATE.format(num=stage_num)}")
     else:
         desc_lines.append(stage["description"])
-
-    # Signature de marque (visible dans chaque événement, tous les jours)
-    desc_lines.append("")
-    desc_lines.append("──────────")
-    desc_lines.append("🚴 Calendrier proposé par Probikestock")
-    desc_lines.append("🔗 probikestock.com")
 
     # Escape each line individually, THEN join with iCal newline literal
     description = "\\n".join(ical_escape(line) for line in desc_lines)
