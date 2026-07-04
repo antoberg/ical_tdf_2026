@@ -1,0 +1,394 @@
+<div id="tdf-article">
+
+<style>
+  /* ─────────  Tour de France 2026 — bloc article (scopé sous #tdf-article)  ─────────
+     Tailles en px : le thème Refresh met la racine à 62,5% (1rem=10px),
+     donc on n'utilise pas rem pour la typo afin de garder une échelle classique. */
+  #tdf-article{
+    --tdf-ink: 14,27,77;          /* bleu marine du thème */
+    --tdf-accent: 71,112,219;     /* bleu accent du thème */
+    --tdf-green: 28,122,62;       /* vert récupération */
+    --tdf-surface: 246,248,252;
+    --tdf-line: rgba(14,27,77,.12);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 8px 20px 40px;
+    color: rgb(var(--tdf-ink));
+    font-family: var(--font-body-family, "Questrial", system-ui, sans-serif);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    text-align: left;
+  }
+  #tdf-article *{ box-sizing: border-box; }
+
+  /* En-tête éditorial */
+  #tdf-article .tdf-eyebrow{
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(var(--tdf-accent));
+    margin: 0 0 .6em;
+  }
+  #tdf-article h1{
+    font-family: var(--font-heading-family, "Archivo", system-ui, sans-serif);
+    font-weight: 800;
+    font-size: clamp(28px, 4.5vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 .5em;
+    color: rgb(var(--tdf-ink));
+  }
+  #tdf-article .tdf-lead{
+    font-size: 18px;
+    line-height: 1.6;
+    color: rgba(var(--tdf-ink), .72);
+    margin: 0 0 1.6em;
+  }
+
+  /* Bandeau de statistiques */
+  #tdf-article .tdf-stats{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px 12px;
+    margin: 0 0 2.4em;
+    padding: 24px 0;
+    border-top: 1px solid var(--tdf-line);
+    border-bottom: 1px solid var(--tdf-line);
+  }
+  #tdf-article .tdf-stat{ text-align: center; }
+  #tdf-article .tdf-stat .n{
+    display: block;
+    font-family: var(--font-heading-family, "Archivo", system-ui, sans-serif);
+    font-weight: 800;
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: rgb(var(--tdf-ink));
+  }
+  #tdf-article .tdf-stat .l{
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: rgba(var(--tdf-ink), .55);
+    margin-top: 8px;
+  }
+
+  #tdf-article p{ margin: 0 0 1.2em; }
+
+  #tdf-article h2{
+    font-family: var(--font-heading-family, "Archivo", system-ui, sans-serif);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 2.2em 0 .8em;
+    padding-bottom: .4em;
+    border-bottom: 1px solid var(--tdf-line);
+  }
+
+  /* Liste "ce que contient" */
+  #tdf-article .tdf-features{
+    list-style: none;
+    margin: 0 0 1.5em;
+    padding: 0;
+    display: grid;
+    gap: 11px;
+  }
+  #tdf-article .tdf-features li{
+    position: relative;
+    padding: 1px 0 1px 32px;
+  }
+  #tdf-article .tdf-features li::before{
+    content: "✓";
+    position: absolute;
+    left: 0; top: 3px;
+    width: 21px; height: 21px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgb(var(--tdf-accent));
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* Cartes (gate + débloqué) */
+  #tdf-article .tdf-card{
+    border-radius: 20px;
+    padding: 30px 26px;
+    margin: 2em 0;
+    text-align: center;
+  }
+  #tdf-article .tdf-gate{
+    background: rgb(var(--tdf-ink));
+    color: #eef0f6;
+    padding: 36px 30px;
+  }
+  #tdf-article .tdf-gate h3{
+    font-family: var(--font-heading-family, "Archivo", system-ui, sans-serif);
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 0 0 .5em;
+    color: #fff;
+  }
+  #tdf-article .tdf-gate p{
+    color: rgba(255,255,255,.75);
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 auto 1.5em;
+    max-width: 420px;
+  }
+  #tdf-article .tdf-form{
+    display: flex; gap: 10px; flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center; max-width: 470px; margin: 0 auto;
+  }
+  #tdf-article .tdf-form input[type=email]{
+    flex: 1 1 240px;
+    padding: 15px 20px;
+    border: 0;
+    border-radius: 40px;
+    font-size: 16px;
+    font-family: inherit;
+    color: rgb(var(--tdf-ink));
+  }
+  #tdf-article .tdf-form .tdf-btn{ padding: 15px 28px; }
+  #tdf-article .tdf-btn{
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform .06s ease, opacity .2s ease;
+  }
+  #tdf-article .tdf-btn:active{ transform: translateY(1px); }
+  #tdf-article .tdf-btn-accent{ background: rgb(var(--tdf-accent)); color: #fff; }
+  #tdf-article .tdf-btn-accent:hover{ opacity: .92; }
+  #tdf-article .tdf-fineprint{ font-size: 13px; color: rgba(255,255,255,.55); margin: 1.3em 0 0; }
+
+  #tdf-article .tdf-unlocked{
+    background: rgb(var(--tdf-surface));
+    border: 1px solid var(--tdf-line);
+  }
+  #tdf-article .tdf-unlocked .tdf-ok{
+    font-family: var(--font-heading-family, "Archivo", system-ui, sans-serif);
+    font-weight: 800; font-size: 20px; margin: 0 0 1em; color: rgb(var(--tdf-ink));
+  }
+  #tdf-article .tdf-btn-dark{ background: rgb(var(--tdf-ink)); color: #fff; margin: 6px; }
+  #tdf-article .tdf-btn-outline{ background: #fff; color: rgb(var(--tdf-ink)); border-color: var(--tdf-line); margin: 6px; }
+  #tdf-article .tdf-url{
+    background: #fff; border: 1px solid var(--tdf-line); border-radius: 10px;
+    padding: 12px; margin: 8px auto 0; max-width: 100%; overflow: auto;
+    font-size: 13px; color: rgba(var(--tdf-ink), .8);
+  }
+  #tdf-article .tdf-apps{ text-align: left; max-width: 500px; margin: 1.4em auto 0; font-size: 15px; }
+  #tdf-article .tdf-apps p{ margin: 0 0 .6em; }
+
+  /* Tableau des étapes */
+  #tdf-article .tdf-table-wrap{
+    overflow-x: auto;
+    border: 1px solid var(--tdf-line);
+    border-radius: 16px;
+    margin: 1em 0 2em;
+  }
+  #tdf-article table.tdf-table{
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 660px;
+    font-size: 15px;
+  }
+  #tdf-article .tdf-table thead th{
+    background: rgb(var(--tdf-ink));
+    color: #fff;
+    font-family: var(--font-heading-family, "Archivo", system-ui, sans-serif);
+    font-weight: 700;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  #tdf-article .tdf-table tbody td{
+    padding: 11px 14px;
+    border-top: 1px solid var(--tdf-line);
+    vertical-align: middle;
+  }
+  #tdf-article .tdf-table tbody tr:nth-child(even):not(.tdf-rest){ background: rgba(14,27,77,.025); }
+  #tdf-article .tdf-table tbody tr:hover:not(.tdf-rest){ background: rgba(71,112,219,.08); }
+  #tdf-article .tdf-table .tdf-num{ font-weight: 700; color: rgb(var(--tdf-accent)); }
+  #tdf-article .tdf-table .tdf-km{ white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #tdf-article .tdf-table td.tdf-detail-cell{ text-align: center; white-space: nowrap; }
+
+  /* Bouton "Détail" vers letour.fr */
+  #tdf-article .tdf-detail{
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 40px;
+    background: #fff;
+    border: 1px solid var(--tdf-line);
+    color: rgb(var(--tdf-accent));
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .15s ease, color .15s ease;
+  }
+  #tdf-article .tdf-detail:hover{ background: rgb(var(--tdf-accent)); color: #fff; }
+
+  /* Journées de repos (vert récupération) */
+  #tdf-article .tdf-table tr.tdf-rest td{
+    text-align: center;
+    background: rgba(var(--tdf-green), .10);
+    color: rgb(var(--tdf-green));
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* Retour vers le formulaire */
+  #tdf-article .tdf-cta-bottom{
+    text-align: center;
+    margin: 2.4em 0 0;
+    padding: 22px;
+    background: rgb(var(--tdf-surface));
+    border: 1px solid var(--tdf-line);
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  #tdf-article .tdf-cta-bottom a{ color: rgb(var(--tdf-accent)); text-decoration: none; }
+
+  @media (max-width: 560px){
+    #tdf-article .tdf-stats{ grid-template-columns: repeat(2, 1fr); }
+    #tdf-article .tdf-card{ padding: 26px 18px; }
+  }
+</style>
+
+<header>
+  <p class="tdf-eyebrow">Cyclisme · Grand Tour</p>
+  <h1>Tour de France 2026 : les 21 étapes dans ton agenda</h1>
+  <p class="tdf-lead">De <strong>Barcelone</strong> (4 juillet) aux <strong>Champs-Élysées</strong> (26 juillet), suis la course jour par jour — avec les cols, distances, dénivelés et favoris directement dans ton calendrier.</p>
+
+  <div class="tdf-stats">
+    <div class="tdf-stat"><span class="n">21</span><span class="l">étapes</span></div>
+    <div class="tdf-stat"><span class="n">3 333</span><span class="l">km</span></div>
+    <div class="tdf-stat"><span class="n">54 450</span><span class="l">m D+</span></div>
+    <div class="tdf-stat"><span class="n">2×</span><span class="l">Alpe d'Huez</span></div>
+  </div>
+</header>
+
+<p>On a créé un <strong>calendrier gratuit</strong> à ajouter à ton agenda : chaque étape contient le type de parcours, les cols avec leur pourcentage, le dénivelé, les favoris et un lien vers le profil officiel. Un rappel se déclenche même le matin de chaque étape.</p>
+
+<!-- ═══════════  GATE : formulaire email (Shopify natif)  ═══════════ -->
+<div id="tdf-gate" class="tdf-card tdf-gate">
+  <h3>Reçois le calendrier 🚴</h3>
+  <p>Entre ton email pour débloquer le calendrier et suivre le Tour. Gratuit, désabonnement en un clic.</p>
+
+  <form class="tdf-form" method="post" action="/contact#tdf" accept-charset="UTF-8">
+    <input type="hidden" name="form_type" value="customer">
+    <input type="hidden" name="utf8" value="✓">
+    <input type="hidden" name="contact[tags]" value="newsletter,tdf2026">
+    <input type="email" name="contact[email]" placeholder="ton@email.com" required>
+    <button type="submit" class="tdf-btn tdf-btn-accent">Débloquer →</button>
+  </form>
+  <p class="tdf-fineprint">21 étapes + 2 jours de repos · rappel le matin de chaque étape</p>
+</div>
+
+<!-- ═══════════  DÉBLOQUÉ : révélé après saisie de l'email  ═══════════ -->
+<div id="tdf-unlocked" class="tdf-card tdf-unlocked" style="display:none;">
+  <p class="tdf-ok">✅ C'est débloqué ! Ajoute le Tour à ton agenda 👇</p>
+
+  <a href="https://antoberg.github.io/ical_tdf_2026/tdf2026.ics" class="tdf-btn tdf-btn-dark">📥 Télécharger le calendrier (.ics)</a>
+  <a href="webcal://antoberg.github.io/ical_tdf_2026/tdf2026.ics" class="tdf-btn tdf-btn-outline">📅 S'abonner (mise à jour auto)</a>
+
+  <p style="margin:1.6em 0 .4em; font-size:16px;">Ou copie cette URL dans ton appli agenda :</p>
+  <pre class="tdf-url">https://antoberg.github.io/ical_tdf_2026/tdf2026.ics</pre>
+
+  <div class="tdf-apps">
+    <p><strong>Google Calendar</strong> — Paramètres → Autres agendas → <strong>+</strong> → À partir de l'URL → colle l'adresse.</p>
+    <p><strong>Apple Calendar (iPhone / Mac)</strong> — Fichier → Nouvel abonnement à un calendrier → colle l'adresse.</p>
+    <p><strong>Outlook</strong> — Ajouter un calendrier → S'abonner à partir du web → colle l'adresse.</p>
+  </div>
+</div>
+
+<h2>Ce que contient le calendrier</h2>
+
+<ul class="tdf-features">
+  <li><strong>21 étapes + 2 jours de repos</strong> — chaque événement tombe sur le bon jour</li>
+  <li><strong>Type d'étape</strong> — montagne 🏔️, plaine 🚀, CLM ⏱️, accidentée ⛰️, étape reine 🔥</li>
+  <li><strong>Cols et difficultés</strong> — avec longueur et pourcentage moyen</li>
+  <li><strong>Dénivelé et distance</strong> — pour chaque étape</li>
+  <li><strong>Favoris</strong> — les noms à suivre sur chaque étape</li>
+  <li><strong>Lien vers le profil</strong> — direct sur letour.fr</li>
+  <li><strong>Rappel le matin</strong> — pour ne pas oublier que c'est jour de course</li>
+</ul>
+
+<h2>Les étapes en un coup d'œil</h2>
+
+<div class="tdf-table-wrap">
+<table class="tdf-table">
+  <thead>
+    <tr><th>Ét.</th><th>Date</th><th>Parcours</th><th>Km</th><th>Type</th><th>Détail</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="tdf-num">1</td><td>4 juil.</td><td>Barcelone → Barcelone</td><td class="tdf-km">19,6</td><td>⏱️ CLM équipes</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-1" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">2</td><td>5 juil.</td><td>Tarragone → Barcelone</td><td class="tdf-km">168,5</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-2" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">3</td><td>6 juil.</td><td>Granollers → Les Angles</td><td class="tdf-km">195,9</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-3" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">4</td><td>7 juil.</td><td>Carcassonne → Foix</td><td class="tdf-km">181,9</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-4" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">5</td><td>8 juil.</td><td>Lannemezan → Pau</td><td class="tdf-km">158,3</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-5" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">6</td><td>9 juil.</td><td>Pau → Gavarnie-Gèdre</td><td class="tdf-km">186,2</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-6" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">7</td><td>10 juil.</td><td>Hagetmau → Bordeaux</td><td class="tdf-km">175,1</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-7" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">8</td><td>11 juil.</td><td>Périgueux → Bergerac</td><td class="tdf-km">180,4</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-8" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">9</td><td>12 juil.</td><td>Malemort → Ussel</td><td class="tdf-km">185,5</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-9" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr class="tdf-rest"><td colspan="6">🟢 13 juillet — Journée de repos</td></tr>
+    <tr><td class="tdf-num">10</td><td>14 juil.</td><td>Aurillac → Le Lioran</td><td class="tdf-km">166,6</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-10" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">11</td><td>15 juil.</td><td>Vichy → Nevers</td><td class="tdf-km">161,3</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-11" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">12</td><td>16 juil.</td><td>Magny-Cours → Chalon-sur-Saône</td><td class="tdf-km">179,1</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-12" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">13</td><td>17 juil.</td><td>Dole → Belfort</td><td class="tdf-km">205,8</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-13" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">14</td><td>18 juil.</td><td>Mulhouse → Le Markstein</td><td class="tdf-km">155,3</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-14" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">15</td><td>19 juil.</td><td>Champagnole → Plateau de Solaison</td><td class="tdf-km">183,9</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-15" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr class="tdf-rest"><td colspan="6">🟢 20 juillet — Journée de repos</td></tr>
+    <tr><td class="tdf-num">16</td><td>21 juil.</td><td>Évian → Thonon-les-Bains</td><td class="tdf-km">26,1</td><td>⏱️ CLM individuel</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-16" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">17</td><td>22 juil.</td><td>Chambéry → Voiron</td><td class="tdf-km">174,7</td><td>⛰️ Accidentée</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-17" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">18</td><td>23 juil.</td><td>Voiron → Orcières-Merlette</td><td class="tdf-km">185,2</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-18" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">19</td><td>24 juil.</td><td>Gap → Alpe d'Huez</td><td class="tdf-km">127,9</td><td>🏔️ Montagne</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-19" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">20</td><td>25 juil.</td><td>Bourg-d'Oisans → Alpe d'Huez</td><td class="tdf-km">170,9</td><td>🔥 Étape reine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-20" target="_blank" rel="noopener">Voir →</a></td></tr>
+    <tr><td class="tdf-num">21</td><td>26 juil.</td><td>Thoiry → Paris</td><td class="tdf-km">133</td><td>🚀 Plaine</td><td class="tdf-detail-cell"><a class="tdf-detail" href="https://www.letour.fr/fr/etape-21" target="_blank" rel="noopener">Voir →</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="tdf-cta-bottom">
+  📅 <a href="#tdf-gate">Débloquer le calendrier avec mon email ↑</a>
+</div>
+
+<!-- ═══════════  Script de révélation  ═══════════ -->
+<script>
+  (function () {
+    function unlock(scroll) {
+      var g = document.getElementById('tdf-gate');
+      var u = document.getElementById('tdf-unlocked');
+      if (g) g.style.display = 'none';
+      if (u) {
+        u.style.display = 'block';
+        if (scroll) u.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    try {
+      var p = new URLSearchParams(window.location.search);
+      if (p.get('customer_posted') === 'true' || p.get('contact_posted') === 'true') {
+        localStorage.setItem('tdf_unlocked', '1');
+        unlock(true);
+      } else if (localStorage.getItem('tdf_unlocked') === '1') {
+        unlock(false);
+      }
+    } catch (e) {}
+  })();
+</script>
+
+</div>

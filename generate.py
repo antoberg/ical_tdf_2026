@@ -27,7 +27,7 @@ TYPE_CONFIG = {
     "etape_reine":   {"emoji": "🔥", "label": "Étape reine"},
     "accidentee":    {"emoji": "⛰️",  "label": "Étape accidentée"},
     "plaine":        {"emoji": "🚀", "label": "Étape de plaine"},
-    "repos":         {"emoji": "🟡", "label": "Journée de repos"},
+    "repos":         {"emoji": "🟢", "label": "Journée de repos"},
 }
 
 # ──────────────────────────────────────────────────────────────────────
