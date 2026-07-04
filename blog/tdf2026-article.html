@@ -289,7 +289,7 @@
   <h3>Reçois le calendrier 🚴</h3>
   <p>Entre ton email pour débloquer le calendrier et suivre le Tour. Gratuit, désabonnement en un clic.</p>
 
-  <form class="tdf-form" method="post" action="/contact#tdf" accept-charset="UTF-8">
+  <form class="tdf-form" method="post" action="/contact" accept-charset="UTF-8">
     <input type="hidden" name="form_type" value="customer">
     <input type="hidden" name="utf8" value="✓">
     <input type="hidden" name="contact[tags]" value="newsletter,tdf2026">
@@ -303,11 +303,11 @@
 <div id="tdf-unlocked" class="tdf-card tdf-unlocked" style="display:none;">
   <p class="tdf-ok">✅ C'est débloqué ! Ajoute le Tour à ton agenda 👇</p>
 
-  <a href="https://antoberg.github.io/ical_tdf_2026/tdf2026.ics" class="tdf-btn tdf-btn-dark">📥 Télécharger le calendrier (.ics)</a>
-  <a href="webcal://antoberg.github.io/ical_tdf_2026/tdf2026.ics" class="tdf-btn tdf-btn-outline">📅 S'abonner (mise à jour auto)</a>
+  <a href="https://apps.probikestock.com/tdf-2026/tdf2026.ics" class="tdf-btn tdf-btn-dark">📥 Télécharger le calendrier (.ics)</a>
+  <a href="webcal://apps.probikestock.com/tdf-2026/tdf2026.ics" class="tdf-btn tdf-btn-outline">📅 S'abonner (mise à jour auto)</a>
 
-  <p style="margin:1.6em 0 .4em; font-size:16px;">Ou copie cette URL dans ton appli agenda :</p>
-  <pre class="tdf-url">https://antoberg.github.io/ical_tdf_2026/tdf2026.ics</pre>
+  <p style="margin:1.6em 0 .8em; font-size:16px;">Pour t'abonner manuellement, copie l'adresse puis colle-la dans ton appli agenda :</p>
+  <button type="button" class="tdf-btn tdf-btn-outline" id="tdf-copy" data-url="https://apps.probikestock.com/tdf-2026/tdf2026.ics">📋 Copier l'adresse d'abonnement</button>
 
   <div class="tdf-apps">
     <p><strong>Google Calendar</strong> — Paramètres → Autres agendas → <strong>+</strong> → À partir de l'URL → colle l'adresse.</p>
@@ -374,9 +374,14 @@
       var g = document.getElementById('tdf-gate');
       var u = document.getElementById('tdf-unlocked');
       if (g) g.style.display = 'none';
-      if (u) {
-        u.style.display = 'block';
-        if (scroll) u.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!u) return;
+      u.style.display = 'block';
+      if (scroll) {
+        // Recale la vue sur la carte débloquée (sinon Shopify laisse la page en bas)
+        requestAnimationFrame(function () {
+          var y = u.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo(0, y < 0 ? 0 : y);
+        });
       }
     }
     try {
@@ -388,6 +393,31 @@
         unlock(false);
       }
     } catch (e) {}
+
+    // Bouton "Copier l'adresse" (l'URL n'est jamais affichée en clair)
+    var copyBtn = document.getElementById('tdf-copy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var url = copyBtn.getAttribute('data-url');
+        var done = function () {
+          var prev = copyBtn.textContent;
+          copyBtn.textContent = '✅ Adresse copiée !';
+          setTimeout(function () { copyBtn.textContent = prev; }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(done).catch(function () { fallback(url, done); });
+        } else {
+          fallback(url, done);
+        }
+      });
+    }
+    function fallback(text, cb) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand('copy'); cb(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
   })();
 </script>
 

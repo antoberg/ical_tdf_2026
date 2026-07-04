@@ -3,63 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tour de France 2026 — Calendrier</title>
+  <title>Probikestock · Apps & outils</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui, sans-serif; background: #fafaf8; color: #1a1a1a; display: flex; justify-content: center; padding: 3rem 1rem; }
-    .card { max-width: 480px; width: 100%; background: #fff; border-radius: 16px; border: 1px solid #e5e5e0; padding: 2.5rem 2rem; }
-    h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .sub { color: #666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem; }
-    .btn { display: block; width: 100%; text-align: center; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 500; text-decoration: none; margin-bottom: 0.75rem; }
-    .btn-primary { background: #1a1a1a; color: #fff; }
-    .btn-primary:hover { background: #333; }
-    .btn-secondary { background: #f5f5f0; color: #1a1a1a; border: 1px solid #e5e5e0; }
-    .btn-secondary:hover { background: #eee; }
-    .help { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e5e0; }
-    .help summary { font-size: 0.9rem; color: #666; cursor: pointer; }
-    .help p { font-size: 0.85rem; color: #888; line-height: 1.6; margin-top: 0.75rem; }
-    code { background: #f5f5f0; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfd; color: #0e1b4d; display: flex; justify-content: center; padding: 4rem 1.2rem; }
+    .wrap { max-width: 560px; width: 100%; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 700; color: #4770db; margin-bottom: .8rem; }
+    h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: .5rem; }
+    .sub { color: #5a6485; line-height: 1.6; margin-bottom: 2.4rem; }
+    a.card { display: block; text-decoration: none; color: inherit; background: #fff; border: 1px solid rgba(14,27,77,.12); border-radius: 16px; padding: 1.4rem 1.5rem; margin-bottom: 1rem; transition: border-color .15s ease, transform .06s ease; }
+    a.card:hover { border-color: #4770db; }
+    a.card:active { transform: translateY(1px); }
+    .card h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: .3rem; }
+    .card p { color: #5a6485; font-size: .92rem; line-height: 1.5; }
+    .arrow { float: right; color: #4770db; font-weight: 700; }
+    footer { margin-top: 2.5rem; font-size: .8rem; color: #9aa2bd; }
+    footer a { color: #4770db; text-decoration: none; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🚴 Tour de France 2026</h1>
-    <p class="sub">
-      Les 21 étapes de Barcelone à Paris dans ton agenda.
-      Cols, distances, dénivelés, favoris — tout est dedans.
-    </p>
+  <div class="wrap">
+    <p class="eyebrow">Probikestock</p>
+    <h1>Apps &amp; outils</h1>
+    <p class="sub">Des petits outils gratuits pour les passionné·es de vélo, proposés par Probikestock.</p>
 
-    <a class="btn btn-primary" href="tdf2026.ics" download>
-      📥 Télécharger le calendrier (.ics)
+    <a class="card" href="/tdf-2026/">
+      <span class="arrow">→</span>
+      <h2>🚴 Tour de France 2026</h2>
+      <p>Le calendrier des 21 étapes à ajouter à ton agenda : cols, dénivelés, favoris et rappels.</p>
     </a>
 
-    <a class="btn btn-secondary" id="subscribe-btn" href="#">
-      📅 S'abonner (flux live)
-    </a>
-
-    <details class="help">
-      <summary>Comment s'abonner ?</summary>
-      <p>
-        <strong>Google Calendar</strong> : Paramètres → Autres agendas → + → À partir de l'URL → coller l'adresse ci-dessous.<br><br>
-        <strong>Apple Calendar</strong> : Fichier → Nouvel abonnement → coller l'adresse.<br><br>
-        <strong>Outlook</strong> : Ajouter un calendrier → S'abonner à partir du web.<br><br>
-        URL à copier :<br>
-        <code id="ics-url"></code>
-      </p>
-    </details>
+    <footer>
+      <a href="https://probikestock.com">← Retour sur probikestock.com</a>
+    </footer>
   </div>
-
-  <script>
-    const base = window.location.href.replace(/\/?(index\.html)?$/, '');
-    const icsUrl = base + '/tdf2026.ics';
-    document.getElementById('ics-url').textContent = icsUrl;
-    document.getElementById('subscribe-btn').addEventListener('click', function(e) {
-      e.preventDefault();
-      navigator.clipboard.writeText(icsUrl).then(function() {
-        e.target.textContent = '✅ URL copiée !';
-        setTimeout(function() { e.target.textContent = '📅 S\'abonner (flux live)'; }, 2000);
-      });
-    });
-  </script>
 </body>
 </html>

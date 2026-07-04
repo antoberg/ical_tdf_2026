@@ -29,7 +29,7 @@ jobs:
           python-version: "3.12"
 
       - name: Generate .ics
-        run: python3 generate.py --output public/tdf2026.ics
+        run: python3 generate.py --output public/tdf-2026/tdf2026.ics
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

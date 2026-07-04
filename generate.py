@@ -209,8 +209,8 @@ def main():
     parser.add_argument(
         "--output", "-o",
         type=str,
-        default="public/tdf2026.ics",
-        help="Chemin du fichier .ics en sortie (défaut : public/tdf2026.ics)",
+        default="public/tdf-2026/tdf2026.ics",
+        help="Chemin du fichier .ics en sortie (défaut : public/tdf-2026/tdf2026.ics)",
     )
     parser.add_argument(
         "--stages", "-s",

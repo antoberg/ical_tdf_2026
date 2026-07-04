@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour de France 2026 — Calendrier</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #fafaf8; color: #1a1a1a; display: flex; justify-content: center; padding: 3rem 1rem; }
+    .card { max-width: 480px; width: 100%; background: #fff; border-radius: 16px; border: 1px solid #e5e5e0; padding: 2.5rem 2rem; }
+    h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .sub { color: #666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem; }
+    .btn { display: block; width: 100%; text-align: center; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 500; text-decoration: none; margin-bottom: 0.75rem; }
+    .btn-primary { background: #1a1a1a; color: #fff; }
+    .btn-primary:hover { background: #333; }
+    .btn-secondary { background: #f5f5f0; color: #1a1a1a; border: 1px solid #e5e5e0; }
+    .btn-secondary:hover { background: #eee; }
+    .help { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e5e0; }
+    .help summary { font-size: 0.9rem; color: #666; cursor: pointer; }
+    .help p { font-size: 0.85rem; color: #888; line-height: 1.6; margin-top: 0.75rem; }
+    code { background: #f5f5f0; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚴 Tour de France 2026</h1>
+    <p class="sub">
+      Les 21 étapes de Barcelone à Paris dans ton agenda.
+      Cols, distances, dénivelés, favoris — tout est dedans.
+    </p>
+
+    <a class="btn btn-primary" href="tdf2026.ics" download>
+      📥 Télécharger le calendrier (.ics)
+    </a>
+
+    <a class="btn btn-secondary" id="subscribe-btn" href="#">
+      📅 S'abonner (flux live)
+    </a>
+
+    <details class="help">
+      <summary>Comment s'abonner ?</summary>
+      <p>
+        <strong>Google Calendar</strong> : Paramètres → Autres agendas → + → À partir de l'URL → coller l'adresse ci-dessous.<br><br>
+        <strong>Apple Calendar</strong> : Fichier → Nouvel abonnement → coller l'adresse.<br><br>
+        <strong>Outlook</strong> : Ajouter un calendrier → S'abonner à partir du web.<br><br>
+        URL à copier :<br>
+        <code id="ics-url"></code>
+      </p>
+    </details>
+  </div>
+
+  <script>
+    const base = window.location.href.replace(/\/?(index\.html)?$/, '');
+    const icsUrl = base + '/tdf2026.ics';
+    document.getElementById('ics-url').textContent = icsUrl;
+    document.getElementById('subscribe-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      navigator.clipboard.writeText(icsUrl).then(function() {
+        e.target.textContent = '✅ URL copiée !';
+        setTimeout(function() { e.target.textContent = '📅 S\'abonner (flux live)'; }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

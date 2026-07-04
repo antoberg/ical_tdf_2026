@@ -4,4 +4,4 @@ __pycache__/
 .claude/
 
 # Fichier .ics généré (régénéré par le workflow GitHub Actions)
-public/tdf2026.ics
+public/tdf-2026/tdf2026.ics
