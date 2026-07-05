@@ -393,16 +393,24 @@ function renderMap(){
   if (S.wptLayer){ S.map.removeLayer(S.wptLayer); S.wptLayer = null; }
   if (S.hlLayer){ S.map.removeLayer(S.hlLayer); S.hlLayer = null; }
 
-  // polylines colorées par pente (runs de même couleur)
-  var runPts = [[S.pts[0].lat, S.pts[0].lon]], runColor = gradeColor(S.grade[0]);
-  for (var i = 1; i < S.pts.length; i++){
-    var c = gradeColor(S.grade[i]);
-    runPts.push([S.pts[i].lat, S.pts[i].lon]);
-    if (c !== runColor || i === S.pts.length-1){
-      S.layers.push(L.polyline(runPts, { color: runColor, weight: 4, opacity: .9 }).addTo(S.map));
-      runPts = [[S.pts[i].lat, S.pts[i].lon]];
-      runColor = c;
+  // trace : ligne continue nette (la pente est lisible sur le profil)
+  var latlngs = S.pts.map(function(p){ return [p.lat, p.lon]; });
+  S.layers.push(L.polyline(latlngs, {
+    color: '#4770db', weight: 4, opacity: .9, lineJoin: 'round', lineCap: 'round'
+  }).addTo(S.map));
+  // surlignage discret des passages raides (> 8 %) par tronçons continus
+  if (S.smooth[0] != null){
+    var steepRun = null;
+    for (var i = 0; i < S.pts.length; i++){
+      if (Math.abs(S.grade[i]) >= 8){
+        if (!steepRun) steepRun = [];
+        steepRun.push([S.pts[i].lat, S.pts[i].lon]);
+      } else if (steepRun){
+        if (steepRun.length > 1) S.layers.push(L.polyline(steepRun, { color:'#c92a2a', weight:5, opacity:.9, lineJoin:'round', lineCap:'round' }).addTo(S.map));
+        steepRun = null;
+      }
     }
+    if (steepRun && steepRun.length > 1) S.layers.push(L.polyline(steepRun, { color:'#c92a2a', weight:5, opacity:.9, lineJoin:'round', lineCap:'round' }).addTo(S.map));
   }
 
   // départ / arrivée
