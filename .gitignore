@@ -5,3 +5,6 @@ __pycache__/
 
 # Fichier .ics généré (régénéré par le workflow GitHub Actions)
 public/tdf-2026/tdf2026.ics
+
+# Projet GPX Studio (source standalone, destiné à être déplacé hors du repo)
+gpx_viewer/
