@@ -393,25 +393,9 @@ function renderMap(){
   if (S.wptLayer){ S.map.removeLayer(S.wptLayer); S.wptLayer = null; }
   if (S.hlLayer){ S.map.removeLayer(S.hlLayer); S.hlLayer = null; }
 
-  // trace : ligne continue nette (la pente est lisible sur le profil)
+  // trace : ligne unie simple (comme à l'origine)
   var latlngs = S.pts.map(function(p){ return [p.lat, p.lon]; });
-  S.layers.push(L.polyline(latlngs, {
-    color: '#4770db', weight: 4, opacity: .9, lineJoin: 'round', lineCap: 'round'
-  }).addTo(S.map));
-  // surlignage discret des passages raides (> 8 %) par tronçons continus
-  if (S.smooth[0] != null){
-    var steepRun = null;
-    for (var i = 0; i < S.pts.length; i++){
-      if (Math.abs(S.grade[i]) >= 8){
-        if (!steepRun) steepRun = [];
-        steepRun.push([S.pts[i].lat, S.pts[i].lon]);
-      } else if (steepRun){
-        if (steepRun.length > 1) S.layers.push(L.polyline(steepRun, { color:'#c92a2a', weight:5, opacity:.9, lineJoin:'round', lineCap:'round' }).addTo(S.map));
-        steepRun = null;
-      }
-    }
-    if (steepRun && steepRun.length > 1) S.layers.push(L.polyline(steepRun, { color:'#c92a2a', weight:5, opacity:.9, lineJoin:'round', lineCap:'round' }).addTo(S.map));
-  }
+  S.layers.push(L.polyline(latlngs, { color: '#4770db', weight: 4, opacity: .9 }).addTo(S.map));
 
   // départ / arrivée
   var start = S.pts[0], end = S.pts[S.pts.length-1];
